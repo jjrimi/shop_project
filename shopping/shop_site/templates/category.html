@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Homepage - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/static/css/styles.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="#!">Start Bootstrap</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-expanded="false">Category</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'get_products_by_category' %}?category=All">All Products</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="{% url 'get_products_by_category' %}?category=Notebook">Notebook</a></li>
+                            <li><a class="dropdown-item" href="{% url 'get_products_by_category' %}?category=SmartPhone">SmartPhone</a></li>
+                            <li><a class="dropdown-item" href="{% url 'get_products_by_category' %}?category=Mouse">Mouse</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <form class="form-inline my-2 my-lg-0 mx-auto">
+                    <input class="form-control mr-sm-2 text-dark" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-dark my-2 my-sm-0" type="submit">Search</button>
+                </form>                              
+                
+                <form class="d-flex">
+                    <button class="btn btn-outline-dark" type="submit">
+                        <i class="bi-cart-fill me-1"></i>
+                        Cart
+                        <span class="badge bg-dark text-white ms-1 rounded-pill cart-badge">0</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- Header-->
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Shop in style</h1>
+                <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+            </div>
+        </div>
+    </header>
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for product in products %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top" src="data:image/jpeg;base64,{{ product.image_base64 }}" alt="{{ product.name }}" />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">{{ product.name }}</h5>
+                                    <!-- Product price-->
+                                   {{ product.price }}원
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#productModal{{ product.id }}">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal -->
+                <div class="modal fade" id="productModal{{ product.id }}" tabindex="-1" role="dialog" aria-labelledby="productModal{{ product.id }}Label" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="productModal{{ product.id }}Label">{{ product.name }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <img class="img-fluid" src="data:image/jpeg;base64,{{ product.image_base64 }}" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Price: {{ product.price }}원</h5>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="d-flex justify-content-between align-items-end">
+                                    <button class="btn btn-primary mr-2" onclick="addToCart({{ product.id }})">Add to Cart</button>
+                                    <button class="btn btn-success">Checkout</button>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- Footer-->
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.querySelectorAll(".dropdown-item").forEach(function(item) {
+            item.addEventListener("click", function(event) {
+                event.preventDefault();
+                var category = this.textContent;
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "{% url 'get_products_by_category' %}?category=" + category, true);
+                xhr.onload = function () {
+                    if (xhr.readyState == 4 && xhr.status == "200") {
+                        var products = JSON.parse(xhr.responseText);
+                        var productContainer = document.querySelector(".row.gx-4.gx-lg-5.row-cols-2.row-cols-md-3.row-cols-xl-4.justify-content-center");
+                        productContainer.innerHTML = "";
+                        for (var i in products) {
+                            var product = products[i];
+                            var productDiv = document.createElement("div");
+                            productDiv.className = "col mb-5";
+                            // 상품 카드 생성 코드
+                            var productImage = document.createElement('img');
+                            productImage.className = 'card-img-top';
+                            productImage.src = 'data:image/jpeg;base64,' + product.image_base64;
+                            productImage.alt = product.name;
+
+                            var productBody = document.createElement('div');
+                            productBody.className = 'card-body p-4';
+                            var productName = document.createElement('h5');
+                            productName.className = 'fw-bolder';
+                            productName.textContent = product.name;
+                            var productPrice = document.createElement('p');
+                            productPrice.textContent = product.price;
+                            productBody.appendChild(productName);
+                            productBody.appendChild(productPrice);
+
+                            productDiv.appendChild(productImage);
+                            productDiv.appendChild(productBody);
+                            productContainer.appendChild(productDiv);
+                        }
+                    }
+                }
+                xhr.send();
+            });
+        });
+        </script>              
+    <script>
+        let cartItemsCount = 0;
+        function addToCart(productId) {
+            cartItemsCount++;
+            updateCartBadge();
+            alert("" + $('#productModal'+productId+'Label').text() + "이(가) 장바구니에 추가되었습니다");
+        }
+        function updateCartBadge() {
+            $('.cart-badge').text(cartItemsCount);
+        }
+    </script>
+</body>
+</html>

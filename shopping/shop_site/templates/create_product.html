@@ -1,0 +1,27 @@
+<!-- create_product.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Product</title>
+</head>
+<body>
+    <h2>Create Product</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="id_category">Category:</label>
+        <input type="text" name="category" required>
+        <br>
+        <label for="id_name">Name:</label>
+        <input type="text" name="name" required>
+        <br>
+        <label for="id_price">Price:</label>
+        <input type="number" name="price" required>
+        <br>
+        <label for="id_image">Image:</label>
+        <input type="file" name="image" accept="image/*">
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+
